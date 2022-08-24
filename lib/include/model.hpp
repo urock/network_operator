@@ -10,55 +10,64 @@ public:
     float left;
     float right;
 
-    void print() {
-      std::cout << left << " " << right <<  "\n";
-    }    
+    Control operator+(const Control &ctrl) const {
+      return Control{this->left + ctrl.left, this->right + ctrl.right};
+    }
+    Control operator-(const Control &ctrl) const {
+      return Control{this->left - ctrl.left, this->right - ctrl.right};
+    }
+    Control operator*(float val) const {
+      return Control{this->left * val, this->right * val};
+    }
+
   };
 
   struct State {
     float x;
     float y;
     float yaw;
-    State operator+(const State &state) {
+
+    State operator+(const State &state) const {
       return State{this->x + state.x, this->y + state.y, this->yaw + state.yaw};
     }
-    State operator-(const State &state) {
-      return State{this->x - state.x, this->y - state.y, this->yaw - state.yaw};
+    State operator-(const State &state) const {
+      const float &yaw1=this->yaw;
+      const float &yaw2=state.yaw;
+      float dyaw = atan2f(sinf(yaw1 - yaw2), cosf(yaw1 - yaw2));
+      return State{this->x - state.x, this->y - state.y, dyaw};
+      // return State{this->x - state.x, this->y - state.y, this->yaw - state.yaw};
+
     }
-    State operator*(float val) {
+    State operator*(float val) const {
       return State{this->x * val, this->y * val, this->yaw * val};
     }
 
-    float dist(const State &state) {
-      float dx = fabs(this->x - state.x);
-      float dy = fabs(this->y - state.y);
-      float dyaw = fabs(this->yaw - state.yaw);
-
-      // comparison of meters and radians looks like crap
-      // return std::max(std::max(dx, dy), dyaw);
-      return std::max(dx, dy);
+    bool operator==(const State &state) const {
+      return (this->x == state.x)&& (this->y == state.y)&& (this->yaw == state.yaw);
     }
 
-    void print() {
-      std::cout << x << " " << y << " " << yaw << "\n";
+    float dist(const State &state) const {
+        auto ds = this->operator-(state);
+        // return std::sqrt(ds.x * ds.x + ds.y * ds.y + ds.yaw * ds.yaw);
+        return std::sqrt(ds.x * ds.x + ds.y * ds.y);
     }
 
   };
 
+  Model(const State &, float);
 
-  Model(const State &state, float dt_);
   void setState(const State &);
+  void setState(const Control &);
   const State &getState();
-  
-  State calcVelocity(const Control &) ;
 
-  State calcState(const Control &u);
-  State calcState(State &Vs) ;
+  State calcDeltaState(const Control &);
 
+  State calcState(const Control &);
+  State calcState(const State &);
 
 private:
   float k = 0.5f;
-  
+
   State mCurrentState;
-  float dt; 
+  float dt;
 };
