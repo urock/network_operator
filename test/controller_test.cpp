@@ -1,7 +1,7 @@
-#include <cmath>
+#include "controller.hpp"
+
 #include <gtest/gtest.h>
 
-#include "controller.hpp"
 
 
 TEST(Controller, ConstructorTests)

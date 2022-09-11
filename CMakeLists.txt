@@ -21,7 +21,7 @@ set(LibSources
     lib/controller.cpp
     lib/model.cpp
     lib/nop.cpp
-    # lib/runner.cpp  # do we need runner ??? IMO -no
+    lib/runner.cpp
 )
 
 add_library(${This} STATIC ${LibSources})
