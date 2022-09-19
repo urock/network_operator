@@ -18,10 +18,6 @@ public:
     float getUnaryOperationResult(int operationNum, float input);
     float getBinaryOperationResult(int operationNum, float left, float right);
     
-    
-    // void setOutputsNum(size_t newNum);
-    // size_t getOutputsNum();
-
     // TODO use move semantics and rvalues
     void setNodesForVars(const std::vector<int>& nodes);
     const std::vector<int>& getNodesForVars();

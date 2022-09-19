@@ -19,6 +19,7 @@ public:
     float x;
     float y;
     float yaw;
+
     State operator+(const State &state) {
       return State{this->x + state.x, this->y + state.y, this->yaw + state.yaw};
     }
@@ -34,9 +35,7 @@ public:
       float dy = fabs(this->y - state.y);
       float dyaw = fabs(this->yaw - state.yaw);
 
-      // comparison of meters and radians looks like crap
-      // return std::max(std::max(dx, dy), dyaw);
-      return std::max(dx, dy);
+      return std::sqrt(dx * dx + dy * dy + dyaw * dyaw);
     }
 
     void print() {

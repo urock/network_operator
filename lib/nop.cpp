@@ -8,8 +8,6 @@ NetOper::NetOper()
     initBinaryFunctionsMap();
 }
 
-
-
 float NetOper::getUnaryOperationResult(int operationNum, float input)
 {
     return m_unaryFuncMap[operationNum](input);
@@ -63,18 +61,6 @@ void NetOper::initBinaryFunctionsMap()
     m_binaryFuncMap[7] = xi_7;
     m_binaryFuncMap[8] = xi_8;
 }
-
-
-
-// size_t NetOper::getOutputsNum()
-// {
-//     return m_numOutputs;
-// }
-
-// void NetOper::setOutputsNum(size_t newNum)
-// {
-//     m_numOutputs = newNum;
-// }
 
 const std::vector<int>& NetOper::getNodesForVars()
 {
