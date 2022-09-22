@@ -56,9 +56,6 @@ private:
 
     std::map<int, float(*)(float)> m_unaryFuncMap;
     std::map<int, float(*)(float, float)> m_binaryFuncMap;
-
-
-
 };
 
 extern const std::vector<std::vector<int>> NopPsiN;

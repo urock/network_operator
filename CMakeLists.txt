@@ -21,6 +21,7 @@ set(LibSources
     lib/controller.cpp
     lib/model.cpp
     lib/nop.cpp
+    lib/reader.cpp
     lib/runner.cpp
 )
 

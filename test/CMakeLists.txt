@@ -7,6 +7,7 @@ set(Sources
     controller_test.cpp
     model_test.cpp
     runner_test.cpp
+    reader_test.cpp
 )
 
 enable_testing()

@@ -1,53 +1,80 @@
-#include <iostream>
-#include <vector>
-#include <boost/property_tree/ptree.hpp>
-
-using boost::property_tree::ptree;
-
-#include<boost/property_tree/xml_parser.hpp>
-#include<boost/foreach.hpp>
+#include "reader.h"
 
 
-int main()
+
+NOPMatrixReader::NOPMatrixReader(std::string filePath)
 {
 
-ptree pt;
-read_xml("24_NOP_461", pt);
+	read(filePath);
 
-std::vector<int> Psi_1d;
-std::vector<std::vector<int>> Psi_2d(24, std::vector<int> (24, 0)); 
+}
 
-std::string column;
-std::string row;
-
-auto test = pt.get_child("CONFIG.grid.content").front();
-std::cout<<test.first<<std::endl;
-std::cout<<test.second.get("<xmlattr>.cellcount", "")<<std::endl;
-
-BOOST_FOREACH(ptree::value_type & child, pt.get_child("CONFIG.grid.content.cells"))
+void NOPMatrixReader::read(std::string filePath)
 {
-	column = child.second.get("<xmlattr>.column", "");
-	row = child.second.get("<xmlattr>.row", "");
-	std::string value = child.second.get("<xmlattr>.text", "");
+
+	ptree pt;
+	read_xml(filePath, pt);
+
+	auto contentData = pt.get_child("CONFIG.grid.content").front();
+	int sizeSquared = std::stoi(contentData.second.get("<xmlattr>.cellcount", ""));
+	int size = sqrt(sizeSquared);
 	
-	// skip first column 
-	if(column != "0" && row != "0" && column != "" && row != "")
+	resizeMatrix(size);	
+
+	BOOST_FOREACH(ptree::value_type & child, pt.get_child("CONFIG.grid.content.cells"))
 	{
-		int val = std::stoi(value);
-		int m = std::stoi(column) - 1;
-		int n = std::stoi(row) - 1;
-		// std::cout<<"val "<<val<<" m "<<m<<" n "<<n<<std::endl;
-		Psi_2d[n][m] = val;
+		std::string column = child.second.get("<xmlattr>.column", "");
+		std::string row = child.second.get("<xmlattr>.row", "");
+		std::string value = child.second.get("<xmlattr>.text", "");
+		
+		// skip first column 
+		if(column != "0" && row != "0" && column != "" && row != "")
+		{
+			int val = std::stoi(value);
+			int m = std::stoi(column) - 1;
+			int n = std::stoi(row) - 1;
+			m_matrix[n][m] = val;
+		}
 	}
 }
 
-for(auto n : Psi_2d)
+void NOPMatrixReader::resizeMatrix(int newSize)
 {
-	for(auto m : n)
+	m_size = newSize;
+
+	m_matrix.resize(m_size);
+	for(auto& row : m_matrix)
 	{
-		std::cout<<" "<<m<<" ";
+		row.resize(m_size);
 	}
-	std::cout<<std::endl;
 }
 
+void NOPMatrixReader::print()
+{
+	for(auto n : m_matrix)
+	{
+		for(auto m : n)
+		{
+			std::cout<<" "<<m<<" ";
+		}
+		std::cout<<std::endl;
+	}
+}
+
+void NOPMatrixReader::clearMatrix()
+{
+	for(auto& row : m_matrix)
+	{
+		row.clear();
+	}
+}
+
+const std::vector<std::vector<int>>& NOPMatrixReader::getMatrix()
+{
+	return m_matrix;
+}
+
+int NOPMatrixReader::getMatrixSize()
+{
+	return m_size;
 }
