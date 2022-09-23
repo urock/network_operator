@@ -17,9 +17,11 @@ public:
 
 	NOPMatrixReader() = default;
 
-	NOPMatrixReader(std::string filePath);
+	NOPMatrixReader(const std::string& matrixPath, const std::string& paramsPath);
 
 	const std::vector<std::vector<int>>& getMatrix();
+
+	const std::vector<float>& getParams();
 
 	int getMatrixSize();
 
@@ -30,9 +32,11 @@ public:
 	void print();
 
 private:
-	void read(std::string filePath);
+	void readMatrix(const std::string& matrixPath);
+	void readParams(const std::string& paramsPath);
 
 private:
 	int m_size = 0;
+	std::vector<float> m_params;
 	std::vector<std::vector<int>>  m_matrix;
 };
