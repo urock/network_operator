@@ -7,7 +7,10 @@ set(Sources
     controller_test.cpp
     model_test.cpp
     runner_test.cpp
+    reader_test.cpp
 )
+
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -ldl")
 
 enable_testing()
 
@@ -26,3 +29,8 @@ add_test(
     NAME ${This}
     COMMAND ${This}
 )
+
+add_custom_command(TARGET ${This}  POST_BUILD
+        COMMAND ${CMAKE_COMMAND} -E copy_directory
+                ${CMAKE_CURRENT_SOURCE_DIR}/test_data
+                ${CMAKE_CURRENT_BINARY_DIR}/test_data)
