@@ -1,6 +1,7 @@
 #pragma once
 
 #include "baseFunctions.hpp"
+#include "reader.h"
 #include <map>
 #include <string>
 #include <vector>
