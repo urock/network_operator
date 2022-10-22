@@ -4,7 +4,7 @@ set(This nop_cpp)
 
 project(${This} C CXX)
 
-option (BUILD_APP "Build GTests" ON)
+option (BUILD_APP "Build simple app" ON)
 option (BUILD_TESTS "Build GTests" ON)
 option (TO_CATKIN_WS "" OFF)
 
