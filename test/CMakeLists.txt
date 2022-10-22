@@ -2,7 +2,12 @@ cmake_minimum_required(VERSION 2.8.3)
 
 set(This nop_tests)
 
+include_directories(
+    include
+)
+
 set(Sources
+    nop_test_utils.cpp
     nop_test.cpp
     controller_test.cpp
     model_test.cpp

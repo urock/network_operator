@@ -1,4 +1,5 @@
 #include "nop.hpp"
+#include "nop_test_utils.h"
 
 #include <gtest/gtest.h>
 
@@ -314,4 +315,23 @@ TEST(NOP, trainedOperatorTest)
       EXPECT_TRUE(fabs(y_out_pack[ii][0] - y_out_gold_pack[ii][0]) < 0.001); 
       EXPECT_TRUE(fabs(y_out_pack[ii][1] - y_out_gold_pack[ii][1]) < 0.01); 
     }
+}
+
+TEST(NOP, readMatrixAndParamsTests)
+{
+
+  auto netOper = NetOper();
+  NOPMatrixReader& reader = netOper.getReader();
+
+  std::string cwd = getexepath();
+  cwd = std::string(cwd.begin(), cwd.end()-9);
+  std::string matrixPath = cwd + "/test_data/24_NOP_461";
+  std::string paramsPath = cwd + "/test_data/q_461.txt";
+
+  reader.readMatrix(matrixPath);
+  reader.readParams(paramsPath);
+
+  EXPECT_EQ(reader.getMatrix(), NopPsiN);
+  EXPECT_EQ(reader.getParams(), qc);
+
 }

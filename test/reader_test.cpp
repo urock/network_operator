@@ -2,21 +2,7 @@
 #include <iostream>
 #include <string> 
 #include <gtest/gtest.h>
-
-#include <limits.h>
-#include <unistd.h>
-
-namespace
-{
-
-std::string getexepath()
-{
-  char result[ PATH_MAX ];
-  ssize_t count = readlink( "/proc/self/exe", result, PATH_MAX );
-  return std::string( result, (count > 0) ? count : 0 );
-}
-
-} // namespace
+#include "nop_test_utils.h"
 
 TEST(Reader, ConstructorTests)
 {

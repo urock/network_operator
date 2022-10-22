@@ -28,7 +28,6 @@ void Runner::Euler2()
     Model::Control u2 = mController.calcControl(s1);
     mModel.setState(s1);
     Model::State v2 = mModel.calcVelocity(u2); // fb
-
     mModel.setState(initialState);
     Model::State ctrl = (v1 + v2) * 0.5;
     Model::State movedState = mModel.calcState(ctrl);
