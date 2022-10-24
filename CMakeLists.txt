@@ -4,7 +4,7 @@ set(This nop_cpp)
 
 project(${This} C CXX)
 
-option (BUILD_APP "Build simple app" ON)
+option (BUILD_APP "Build run_to_goal app" ON)
 option (BUILD_TESTS "Build GTests" ON)
 option (TO_CATKIN_WS "" OFF)
 
@@ -34,9 +34,9 @@ if (BUILD_APP)
 FIND_PACKAGE(Boost COMPONENTS program_options REQUIRED)
 INCLUDE_DIRECTORIES(${Boost_INCLUDE_DIRS})
 
-add_executable(simple_app app/simple_app.cpp)
+add_executable(run_to_goal app/run_to_goal.cpp)
 
-target_link_libraries(simple_app PUBLIC
+target_link_libraries(run_to_goal PUBLIC
     nop_cpp
     ${Boost_LIBRARIES}
 )
