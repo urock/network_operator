@@ -17,7 +17,7 @@ int main(int argc, char* argv[])
     float start_x = 0.;
     float start_y = 0.;
     float start_yaw = 0.;
-
+    float maxTime = 10.0;
     // Configure options here
     po::options_description desc ("Allowed options");
     desc.add_options ()
@@ -26,6 +26,7 @@ int main(int argc, char* argv[])
         ("start_y,y", po::value(&start_y), "start y")
         ("start_yaw,yaw", po::value(&start_yaw), "start yaw")
         ("stopInGoal,s", po::value(&stopInGoal), "stop when Goal(0., 0., 0.) is reached")
+        ("maxTime,t", po::value(&maxTime), "max time")
         ("output,o", po::value(&output), "Output files and graphs");
 
 
@@ -44,6 +45,7 @@ int main(int argc, char* argv[])
     std::cout<<"START\n";
     std::cout<<"Initial state = "<<currState.x<<" "<<currState.y<<" "<<currState.yaw<<"\n";
     std::cout<<"Goal state = "<<Goal.x<<" "<<Goal.y<<" "<<Goal.yaw<<"\n";
+    
     // create network operator and set prarams
     NetOper nop = NetOper();
     nop.setNodesForVars({0, 1, 2});      // Pnum
@@ -60,7 +62,7 @@ int main(int argc, char* argv[])
     runner.setGoal(Goal);
 
     double time = 0.;                     
-    while (true) 
+    while (maxTime > time) 
     {
         currState = runner.makeStep();
         // currState.print();
@@ -68,7 +70,8 @@ int main(int argc, char* argv[])
         if (stopInGoal && currState.dist(Goal) < delta)
             break; 
     }
-
+    std::cout<<"State ";
+    currState.print();
     std::cout<<"spend time: " << time <<" (s)\n";
     std::cout<<"END\n";
 
