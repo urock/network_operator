@@ -4,10 +4,12 @@
 #include "runner.hpp"
 
 #include <boost/program_options.hpp>
+#include <fstream>
 #include <string>
 
 #include <iostream>
 namespace po = boost::program_options;
+
 
 int main(int argc, char* argv[])
 {
@@ -18,6 +20,10 @@ int main(int argc, char* argv[])
     float start_y = 0.;
     float start_yaw = 0.;
     float maxTime = 10.0;
+    std::string pathToMatrix = "";
+    std::string pathToParams = "";
+    std::string outputPath = "";
+    std::ofstream outdata;
     // Configure options here
     po::options_description desc ("Allowed options");
     desc.add_options ()
@@ -27,7 +33,9 @@ int main(int argc, char* argv[])
         ("start_yaw,yaw", po::value(&start_yaw), "start yaw")
         ("stopInGoal,s", po::value(&stopInGoal), "stop when Goal(0., 0., 0.) is reached")
         ("maxTime,t", po::value(&maxTime), "max time")
-        ("output,o", po::value(&output), "Output files and graphs");
+        ("output,o", po::value(&outputPath), "Output files and graphs")
+        ("pathToMatrix,m", po::value(&pathToMatrix), "Output files and graphs")
+        ("pathToParams,p", po::value(&pathToParams), "pathToParams");
 
 
     // Parse command line arguments
@@ -54,6 +62,22 @@ int main(int argc, char* argv[])
     nop.setCs(qc);                       // set Cs
     nop.setPsi(NopPsiN);                 // set matrix
 
+    // u can read params with reader
+    if(pathToMatrix.size() > 0)
+    {
+        std::cout<<"Matrix path "<<pathToMatrix<<std::endl;
+        NOPMatrixReader& reader = nop.getReader();
+        reader.readMatrix(pathToMatrix);
+        nop.setPsi(reader.getMatrix());
+    }
+    if(pathToParams.size() > 0)
+    {
+        std::cout<<"Matrix parameters "<<pathToParams<<std::endl;
+        NOPMatrixReader& reader = nop.getReader();
+        reader.readParams(pathToParams);
+        nop.setCs(reader.getParams());
+    }
+
     Model model(currState, dt);
 
     Controller controller(Goal, nop);
@@ -61,11 +85,24 @@ int main(int argc, char* argv[])
     Runner runner(model, controller); 
     runner.setGoal(Goal);
 
-    double time = 0.;                     
+    double time = 0.;                 
+    bool logData = outputPath.size() > 0; 
+
+    if (logData)
+    {
+        std::cout<<"LOG PATH"<<std::endl;
+        outdata.open(outputPath, std::fstream::in  | std::ofstream::out | std::ofstream::trunc);
+        outdata<<"t x y yaw\n";
+    }
+
     while (maxTime > time) 
     {
         currState = runner.makeStep();
         // currState.print();
+
+        if(logData)
+            outdata<<time<<" "<<currState.x<<" "<<currState.y<<" "<<currState.yaw<<"\n";
+
         time += dt;
         if (stopInGoal && currState.dist(Goal) < delta)
             break; 
