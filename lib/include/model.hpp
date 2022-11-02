@@ -6,13 +6,26 @@
 class Model {
 
 public:
-  struct Control {
+  struct Control 
+  {
     float left;
     float right;
 
-    void print() {
-      std::cout << left << " " << right <<  "\n";
-    }    
+    Control operator+(const Control &ctrl) const 
+    {
+      return Control{this->left + ctrl.left, this->right + ctrl.right};
+    }
+    
+    Control operator-(const Control &ctrl) const 
+    {
+      return Control{this->left - ctrl.left, this->right - ctrl.right};
+    }
+    
+    Control operator*(float val) const 
+    {
+      return Control{this->left * val, this->right * val};
+    }
+
   };
 
   struct State {
@@ -57,7 +70,6 @@ public:
 
 private:
   float k = 0.5f;
-  
   State mCurrentState;
   float dt; 
 };

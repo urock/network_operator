@@ -1,12 +1,22 @@
 #include "model.hpp"
 #include <cmath>
 
-Model::Model(const State &state_, float dt_): mCurrentState(state_)
-  ,dt(dt_) {}
+Model::Model(const State &state_, float dt_): 
+  mCurrentState(state_),
+  dt(dt_) 
+  {
 
-void Model::setState(const State &state_) { mCurrentState = state_; }
+  }
 
-const Model::State &Model::getState() { return mCurrentState; }
+void Model::setState(const State &state_) 
+{ 
+  mCurrentState = state_; 
+}
+
+const Model::State &Model::getState() 
+{ 
+  return mCurrentState; 
+}
 
 Model::State Model::calcVelocity(const Control &u) 
 {

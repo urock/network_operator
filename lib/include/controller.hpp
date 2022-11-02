@@ -25,7 +25,7 @@ public:
   void setGoal(Model::State newGoal);
 
   /// returns nnetwork operator
-  NetOper &netOper();
+  // NetOper &netOper();
 
 private:
   Model::State mGoal;

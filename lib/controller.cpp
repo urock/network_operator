@@ -30,7 +30,7 @@ void Controller::setGoal(Model::State newGoal)
 	mGoal = newGoal;
 }
 
-NetOper& Controller::netOper()
-{
-	return m_netOper;
-}
+// NetOper& Controller::netOper()
+// {
+// 	return m_netOper;
+// }
