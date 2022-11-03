@@ -1,21 +1,17 @@
-#include <iostream>
-#include <cmath>
-
 #include "controller.hpp"
 
-Controller::Controller(const Model::State &goal_, NetOper &netOper):mGoal(goal_)
-	,m_netOper(netOper)
-{
-}
+Controller::Controller(const Model::State &goalState, NetOper &netOper):
+	mGoal(goalState),
+	m_netOper(netOper)
+{ }
 
 Model::Control Controller::calcControl(const Model::State& currState)
 {	
-	Model::State d = mGoal - currState; 
-
+	Model::State delta = mGoal - currState; 
 
 	std::vector<float> u(2, 0);
 
-	m_netOper.calcResult({d.x, d.y, d.yaw}, u);
+	m_netOper.calcResult({delta.x, delta.y, delta.yaw}, u);
 
     constexpr float Umax = 10.0f;
   	u[0] = std::min(std::max(u[0], -Umax), Umax);
@@ -29,8 +25,3 @@ void Controller::setGoal(Model::State newGoal)
 {
 	mGoal = newGoal;
 }
-
-// NetOper& Controller::netOper()
-// {
-// 	return m_netOper;
-// }

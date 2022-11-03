@@ -4,16 +4,15 @@
 class Runner {
 
     public:
-        Runner(Model& model_, Controller & controller_);
-        void setGoal(const Model::State &);
-        void init(const Model::State &);
-
+        Runner(Model& model, Controller& controller);
+        void setGoal(const Model::State& goal);
+        void init(const Model::State& goal);
         Model::State makeStep(); 
 
     private:
-        Model &mModel;
-        Controller &mController;  
+        void Euler2();
 
-        void Euler2(void);
-
+    private:
+        Model &m_model;
+        Controller &m_controller;  
 };

@@ -1,24 +1,24 @@
 #include "runner.hpp"
 
 
-Runner::Runner(Model& model_, Controller& controller_): mModel(model_)
-  ,mController(controller_) {}
+Runner::Runner(Model& model, Controller& controller): 
+    m_model(model_),
+    m_controller(controller_) {}
 
 
 
-void Runner::setGoal(const Model::State &goal_)
+void Runner::setGoal(const Model::State &goal)
 {
-    mController.setGoal(goal_);
+    m_controller.setGoal(goal);
 }
 
-void Runner::init(const Model::State &state_)
+void Runner::init(const Model::State& state)
 {
-    mModel.setState(state_);
+    m_model.setState(state);
 }
 
 void Runner::Euler2() 
 {
-
     Model::State initialState = mModel.getState();
 
     Model::Control u1 = mController.calcControl(initialState);
