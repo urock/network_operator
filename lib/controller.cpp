@@ -3,7 +3,7 @@
 Controller::Controller(const Model::State &goalState, NetOper &netOper):
 	m_goal(goalState),
 	m_netOper(netOper)
-{ }
+	{ }
 
 Model::Control Controller::calcControl(const Model::State& currState)
 {	
