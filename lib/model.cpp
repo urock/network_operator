@@ -65,21 +65,21 @@ const Model::State& Model::getState()
   return m_currentState; 
 }
 
-Model::State Model::calcVelocity(const Model::Control &u) 
+Model::State Model::velocityFromControl(const Model::Control &u) 
 {
   return  State{k * (u.left + u.right) * cosf(m_currentState.yaw),
                 k * (u.left + u.right) * sinf(m_currentState.yaw),
                 k * (u.left - u.right)};
 }
 
-Model::State Model::calcState(Model::State &Vs) 
+Model::State Model::nextStateFromVelocity(Model::State &vel) 
 {
-  return m_currentState + Vs * m_dt;
+  return m_currentState + vel * m_dt;
 }
 
-Model::State Model::calcStateFromControl(const Model::Control &u) 
+Model::State Model::nextStateFromControl(const Model::Control &u) 
 {
-  auto Vs = calcVelocity(u);
-  return calcState(Vs);
+  Model::State vel = velocityFromControl(u);
+  return nextStateFromVelocity(vel);
 }
 

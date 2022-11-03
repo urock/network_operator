@@ -34,9 +34,9 @@ public:
   Model(const State &state, float dt);
   void setState(const State &state);
   const State& getState();
-  State calcVelocity(const Control &u) ;
-  State calcState(State &Vs) ;
-  State calcStateFromControl(const Control &u);
+  State velocityFromControl(const Control &u) ;
+  State nextStateFromVelocity(State &vel) ;
+  State nextStateFromControl(const Control &u);
 
 private:
 
