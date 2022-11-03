@@ -2,39 +2,39 @@
 
 // Model::Control
 
-Model::Control operator+(const Control &ctrl) const 
+Model::Control Model::Control::operator+(const Model::Control &ctrl)
 {
-  return Control{this->left + ctrl.left, this->right + ctrl.right};
+  return Model::Control{this->left + ctrl.left, this->right + ctrl.right};
 }
 
-Model::Control operator-(const Control &ctrl) const 
+Model::Control Model::Control::operator-(const Model::Control &ctrl) 
 {
-  return Control{this->left - ctrl.left, this->right - ctrl.right};
+  return Model::Control{this->left - ctrl.left, this->right - ctrl.right};
 }
 
-Model::Control operator*(float val) const 
+Model::Control Model::Control::operator*(float val) 
 {
   return Control{this->left * val, this->right * val};
 }
 
 // Model::State
 
-Model::State operator+(const State &state) 
+Model::State Model::State::operator+(const Model::State &state) 
 {
-  return State{this->x + state.x, this->y + state.y, this->yaw + state.yaw};
+  return Model::State{this->x + state.x, this->y + state.y, this->yaw + state.yaw};
 }
 
-Model::State operator-(const State &state) 
+Model::State Model::State::operator-(const Model::State &state) 
 {
-  return State{this->x - state.x, this->y - state.y, this->yaw - state.yaw};
+  return Model::State{this->x - state.x, this->y - state.y, this->yaw - state.yaw};
 }
 
-Model::State operator*(float val) 
+Model::State Model::State::operator*(float val) 
 {
-  return State{this->x * val, this->y * val, this->yaw * val};
+  return Model::State{this->x * val, this->y * val, this->yaw * val};
 }
 
-float dist(const State &state) 
+float Model::State::dist(const Model::State &state) 
 {
   float dx = fabs(this->x - state.x);
   float dy = fabs(this->y - state.y);
@@ -43,50 +43,41 @@ float dist(const State &state)
   return std::sqrt(dx * dx + dy * dy + dyaw * dyaw);
 }
 
-void print() 
+void Model::State::print() 
 {
   std::cout << x << " " << y << " " << yaw << "\n";
 }
 
 // Model::Model
 
-Model::Model(const State &state, float dt): 
+Model::Model(const Model::State &state, float dt): 
   m_currentState(state),
   m_dt(dt) 
   {}
 
-void Model::setState(const State &state) 
+void Model::setState(const Model::State &state) 
 { 
-  mCurrentState = state; 
+  m_currentState = state; 
 }
 
-const Model::State &Model::getState() 
+const Model::State& Model::getState() 
 { 
-  return mCurrentState; 
+  return m_currentState; 
 }
 
-// State getNextState(const Control &u)
-// {
-//   State deltaState = m_dt * State{k * (u.left + u.right) * cosf(mCurrentState.yaw),
-//                                   k * (u.left + u.right) * sinf(mCurrentState.yaw),
-//                                   k * (u.left - u.right)};
-
-//   return mCurrentState + deltaState;
-// }
-
-Model::State Model::calcVelocity(const Control &u) 
+Model::State Model::calcVelocity(const Model::Control &u) 
 {
-  return  State{k * (u.left + u.right) * cosf(mCurrentState.yaw),
-                k * (u.left + u.right) * sinf(mCurrentState.yaw),
+  return  State{k * (u.left + u.right) * cosf(m_currentState.yaw),
+                k * (u.left + u.right) * sinf(m_currentState.yaw),
                 k * (u.left - u.right)};
 }
 
-Model::State Model::calcState(State &Vs) 
+Model::State Model::calcState(Model::State &Vs) 
 {
-  return mCurrentState + Vs * dt;
+  return m_currentState + Vs * m_dt;
 }
 
-Model::State Model::calcState(const Control &u) 
+Model::State Model::calcStateFromControl(const Model::Control &u) 
 {
   auto Vs = calcVelocity(u);
   return calcState(Vs);

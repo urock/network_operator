@@ -21,6 +21,8 @@ public:
   /// set new goal state
   void setGoal(Model::State newGoal);
 
+  NetOper& netOper();
+
 private:
   Model::State m_goal;
   NetOper m_netOper;
