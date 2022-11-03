@@ -23,7 +23,7 @@ public:
 
   NetOper& netOper();
 
-private:
+protected:
   Model::State m_goal;
   NetOper m_netOper;
   const float Eps = 0.1; // [m]
