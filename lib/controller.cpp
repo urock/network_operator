@@ -22,6 +22,7 @@ Model::Control Controller::calcControl(const Model::State& currState)
 
 void Controller::setGoal(Model::State newGoal)
 {
+	if(m_goal == newGoal) return;
 	m_goal = newGoal;
 }
 

@@ -19,6 +19,11 @@ Model::Control Model::Control::operator*(float val)
 
 // Model::State
 
+bool Model::State::operator==(const Model::State &state) 
+{
+  return (this->x == state.x) && (this->y == state.y) && (this->yaw == state.yaw);
+}
+
 Model::State Model::State::operator+(const Model::State &state) 
 {
   return Model::State{this->x + state.x, this->y + state.y, this->yaw + state.yaw};
@@ -26,7 +31,10 @@ Model::State Model::State::operator+(const Model::State &state)
 
 Model::State Model::State::operator-(const Model::State &state) 
 {
-  return Model::State{this->x - state.x, this->y - state.y, this->yaw - state.yaw};
+  const float &yaw1=this->yaw;
+  const float &yaw2=state.yaw;
+  float dyaw = atan2f(sinf(yaw1 - yaw2), cosf(yaw1 - yaw2));
+  return State{this->x - state.x, this->y - state.y, dyaw};
 }
 
 Model::State Model::State::operator*(float val) 
@@ -41,6 +49,12 @@ float Model::State::dist(const Model::State &state)
   float dyaw = fabs(this->yaw - state.yaw);
 
   return std::sqrt(dx * dx + dy * dy + dyaw * dyaw);
+}
+
+float Model::State::distXY(const Model::State &state)
+{
+  auto ds = this->operator-(state);
+  return std::sqrt(ds.x * ds.x + ds.y * ds.y);
 }
 
 void Model::State::print() 
