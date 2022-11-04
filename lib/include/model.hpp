@@ -6,58 +6,44 @@
 class Model {
 
 public:
-  struct Control {
-    float left;
-    float right;
 
-    void print() {
-      std::cout << left << " " << right <<  "\n";
-    }    
-  };
+struct Control 
+{
+  float left;
+  float right;
 
-  struct State {
-    float x;
-    float y;
-    float yaw;
+  Control operator+(const Control &ctrl);   
+  Control operator-(const Control &ctrl);
+  Control operator*(float val);
+};
 
-    State operator+(const State &state) {
-      return State{this->x + state.x, this->y + state.y, this->yaw + state.yaw};
-    }
-    State operator-(const State &state) {
-      return State{this->x - state.x, this->y - state.y, this->yaw - state.yaw};
-    }
-    State operator*(float val) {
-      return State{this->x * val, this->y * val, this->yaw * val};
-    }
+struct State 
+{
+  float x;
+  float y;
+  float yaw;
 
-    float dist(const State &state) {
-      float dx = fabs(this->x - state.x);
-      float dy = fabs(this->y - state.y);
-      float dyaw = fabs(this->yaw - state.yaw);
+  bool operator==(const State &state);
+  State operator+(const State &state);
+  State operator-(const State &state);
+  State operator*(float val);
+  float dist(const State &state);
+  float distXY(const State &state);
+  void print();
+};
 
-      return std::sqrt(dx * dx + dy * dy + dyaw * dyaw);
-    }
-
-    void print() {
-      std::cout << x << " " << y << " " << yaw << "\n";
-    }
-
-  };
-
-
-  Model(const State &state, float dt_);
-  void setState(const State &);
-  const State &getState();
-  
-  State calcVelocity(const Control &) ;
-
-  State calcState(const Control &u);
-  State calcState(State &Vs) ;
-
+public:
+  Model(const State &state, float dt);
+  void setState(const State &state);
+  const State& getState();
+  State velocityFromControl(const Control &u) ;
+  State nextStateFromVelocity(State &vel) ;
+  State nextStateFromControl(const Control &u);
 
 private:
+
   float k = 0.5f;
-  
-  State mCurrentState;
-  float dt; 
+  State m_currentState;
+  float m_dt; 
+
 };

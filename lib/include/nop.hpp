@@ -1,6 +1,7 @@
 #pragma once
 
 #include "baseFunctions.hpp"
+#include "reader.h"
 #include <map>
 #include <string>
 #include <vector>
@@ -10,6 +11,8 @@
 class NetOper
 {
 public:
+
+    // default constructor
     NetOper();
 
     // RPCntrol
@@ -34,13 +37,14 @@ public:
     void setPsi(const std::vector<std::vector<int>>& newMatrix);
     const std::vector<std::vector<int>>& getPsi();
 
+    NOPMatrixReader& getReader();
     
 private:
     void initUnaryFunctionsMap();
     void initBinaryFunctionsMap();
 
 private:
-    // size_t m_matrixDimension;              // L
+    NOPMatrixReader m_reader;
     size_t m_numOutputs;                   // Mout
     // std::vector<float> m_variables;        // Vs // probably useless
     std::vector<float> m_parameters;       // Cs

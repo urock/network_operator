@@ -31,9 +31,10 @@ public:
 
 	void print();
 
-private:
 	void readMatrix(const std::string& matrixPath);
+	
 	void readParams(const std::string& paramsPath);
+
 
 private:
 	int m_size = 0;

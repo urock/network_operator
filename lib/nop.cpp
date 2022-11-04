@@ -151,6 +151,11 @@ void NetOper::calcResult(const std::vector<float>& x_in, std::vector<float>& y_o
 
 }
 
+NOPMatrixReader& NetOper::getReader()
+{
+    return m_reader;
+}
+
 // NopPsiN - Naive NetOper trained without constraits
 const std::vector<std::vector<int>> NopPsiN =
   {{0,0,0,0,  0,0,1,10,  0,0,12,1,  0,0,0,0,  0,0,0,0,   0,0,0,10},
