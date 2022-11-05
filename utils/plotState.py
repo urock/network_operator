@@ -4,7 +4,7 @@ import argparse
 import matplotlib.pyplot as plt
 
 
-FONT_SIZE = 12
+FONT_SIZE = 14
 
 def parse_trajectory(path):
     """
@@ -21,8 +21,25 @@ def parse_trajectory(path):
 
     return data
 
+def save_plot(path):
+    """Saves graph to the output pkg"""
 
-def plot_data(data, output):
+    folder_path = path
+    name = "graph"
+
+    print("folder_path: ", folder_path)
+    print("name: ", name)
+
+    pwd = os.getcwd()
+    os.chdir(os.path.expanduser('~'))
+    if not os.path.exists(folder_path):
+        os.makedirs(folder_path)
+        
+    os.chdir(folder_path)
+    plt.savefig('{}.png'.format(name))
+    os.chdir(pwd)
+
+def plot_data(data):
     """
 
     """
@@ -46,14 +63,15 @@ def plot_data(data, output):
     axis[1, 1].plot(data['x'], data['y'])
     axis[1, 1].set_title("y(x)")
       
+
     # Combine all the operations and display
-    plt.show()
+    # plt.show()
 
 
 def main():
     """ """
 
-    plt.rcParams['font.size'] = '12'
+    plt.rcParams['font.size'] = FONT_SIZE
 
     parser = argparse.ArgumentParser()
     parser.add_argument('-input', action='store', dest='input',
@@ -69,8 +87,12 @@ def main():
 
     data = parse_trajectory(args.input)
 
-    plot_data(data, args.output)
+    plot_data(data)
 
+    if(args.output):
+        save_plot(args.output)
+
+    plt.show()
 
 if __name__ == "__main__":
     main()
