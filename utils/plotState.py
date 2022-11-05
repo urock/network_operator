@@ -21,11 +21,10 @@ def parse_trajectory(path):
 
     return data
 
-def save_plot(path):
+def save_plot(path, name):
     """Saves graph to the output pkg"""
 
     folder_path = path
-    name = "graph"
 
     print("folder_path: ", folder_path)
     print("name: ", name)
@@ -34,7 +33,7 @@ def save_plot(path):
     os.chdir(os.path.expanduser('~'))
     if not os.path.exists(folder_path):
         os.makedirs(folder_path)
-        
+
     os.chdir(folder_path)
     plt.savefig('{}.png'.format(name))
     os.chdir(pwd)
@@ -64,9 +63,6 @@ def plot_data(data):
     axis[1, 1].set_title("y(x)")
       
 
-    # Combine all the operations and display
-    # plt.show()
-
 
 def main():
     """ """
@@ -82,15 +78,16 @@ def main():
                         help="absolute path to the output folder to store images")
 
     args = parser.parse_args()
+    input_path = args.input
+    print("input_path: ", input_path)
 
-    print("input_path: ",args.input)
-
-    data = parse_trajectory(args.input)
+    data = parse_trajectory(input_path)
 
     plot_data(data)
 
     if(args.output):
-        save_plot(args.output)
+        name = "plot_" + input_path.split('/')[-1].split('.')[0]
+        save_plot(args.output, name)
 
     plt.show()
 
