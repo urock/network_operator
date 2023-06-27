@@ -22,10 +22,11 @@ public:
   NetOper& netOper();
 
   void setUMax(float newUMax);
+  void setEps(float newEps);
 
 protected:
   Model::State m_goal;
   NetOper m_netOper;
-  const float Eps = 0.1; // [m]
+  float Eps = 0.1; // [m]
   float Umax = 10.f;
 };
