@@ -32,9 +32,3 @@ void Controller::setUMax(float newUMax)
 	if(newUMax == Umax) return;
 	Umax = newUMax;
 }
-
-void Controller::setEps(float newEps)
-{
-	if(newEps == Eps) return;
-	Eps = newEps;
-}

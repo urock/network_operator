@@ -156,6 +156,20 @@ NOPMatrixReader& NetOper::getReader()
     return m_reader;
 }
 
+// only for local tests
+void NetOper::setLocalTestsParameters()
+{
+    NOPMatrixReader& reader = this->getReader();
+    reader.readMatrix("/home/user/catkin_ws/src/rosbot_nop_controller/data/24_NOP_461");
+    reader.readParams("/home/user/catkin_ws/src/rosbot_nop_controller/data/q_461.txt");
+
+    this->setNodesForVars({0, 1, 2});   // Pnum
+    this->setNodesForParams({3, 4, 5}); // Rnum
+    this->setNodesForOutput({22, 23});  // Dnum
+    this->setCs(reader.getParams());
+    this->setPsi(reader.getMatrix());
+}
+
 // NopPsiN - Naive NetOper trained without constraits
 const std::vector<std::vector<int>> NopPsiN =
   {{0,0,0,0,  0,0,1,10,  0,0,12,1,  0,0,0,0,  0,0,0,0,   0,0,0,10},

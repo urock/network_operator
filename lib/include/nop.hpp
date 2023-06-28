@@ -39,6 +39,8 @@ public:
 
     NOPMatrixReader& getReader();
     
+    void setLocalTestsParameters();
+
 private:
     void initUnaryFunctionsMap();
     void initBinaryFunctionsMap();
