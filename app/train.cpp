@@ -12,7 +12,7 @@ int main() {
     // --- Parameters based on Pascal unit1.pas and unitadaptobject.pas ---
 
     // Genetic Algorithm Parameters (from unit1.pas and TGANOP)
-    int population_size = 512;      // HH1
+    int population_size = 128;      // HH1
     int num_generations = 128;       // PP1
     double crossover_rate = 0.4;     // alfa1
     double mutation_rate = 0.7;      // pmut1
@@ -26,7 +26,7 @@ int main() {
 
     // System Model Parameters (from unit1.pas and TModel/TUser)
     Model::State initial_state = {0.0, 0.0, 0.0}; // x0c
-    Model::State target_state = {0.0, 0.0, 0.0};  // xfc (Note: xfc is all zeros in Pascal, adjust if your target is different)
+    Model::State target_state = {5.0, 5.0, 1.0};  // xfc (Note: xfc is all zeros in Pascal, adjust if your target is different)
     float time_step = 0.01;          // dt1
     float terminal_threshold = 0.1;  // epsterm
     float terminal_time = 1.5;       // tf1
@@ -50,9 +50,9 @@ int main() {
     std::vector<float> initial_nop_params = {1.0, 1.0, 1.0}; // qc (Note: qc is also used for q in TGANOP)
 
     // Range for undefined parameters (qyminc, qymaxc, stepsqyc from unit1.pas)
-    std::vector<float> qy_min = {-2.5, -2.5, -5.0 * M_PI / 12.0};
-    std::vector<float> qy_max = {2.5, 2.5, 5.0 * M_PI / 12.0};
-    std::vector<float> qy_step = {1.25, 2.5, 5.0 * M_PI / 12.0};
+    std::vector<float> qy_min = {-25, -25, -50 * M_PI / 12.0};
+    std::vector<float> qy_max = {25, 25, 50 * M_PI / 12.0};
+    std::vector<float> qy_step = {0.25, 0.25, 5.0 * M_PI / 12.0};
 
 
     // --- Create and Configure Genetic Algorithm ---
@@ -67,7 +67,11 @@ int main() {
         time_step,
         terminal_threshold,
         psi_matrix_dimension,
-        num_parameters // Using num_parameters (p1) for the chromosome's parameter size
+        num_parameters,
+        qy_min,
+        qy_max,
+        qy_step,
+        num_undefined_params // Using num_parameters (p1) for the chromosome's parameter size
     );
 
     // Set additional GA parameters (if you added them as members)
